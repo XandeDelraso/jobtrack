@@ -36,6 +36,8 @@ function buildApplication(overrides: Partial<ApplicationRow> = {}): ApplicationR
     follow_up_date: null,
     created_at: "2026-01-15T00:00:00.000Z",
     updated_at: "2026-01-15T00:00:00.000Z",
+    status_changed_at: "2026-01-01T00:00:00.000Z",
+    auto_moved_at: null,
     ...overrides,
   };
 }

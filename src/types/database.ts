@@ -53,6 +53,10 @@ export interface ApplicationRow {
   is_favorite: boolean;
   priority: PriorityLevel;
   follow_up_date: string | null;
+  /** Última mudança de status (gerenciada pelo banco). */
+  status_changed_at: string;
+  /** Preenchido quando o card foi movido automaticamente para "Sem retorno". */
+  auto_moved_at: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -62,6 +66,8 @@ export type ApplicationInsert = Omit<
   | "id"
   | "created_at"
   | "updated_at"
+  | "status_changed_at"
+  | "auto_moved_at"
   | "salary_currency"
   | "status"
   | "is_favorite"

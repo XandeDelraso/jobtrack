@@ -110,3 +110,7 @@ export const PRIORITY_META: Record<
     dotClass: "bg-rose-500",
   },
 };
+
+/** Dias sem mudança de status até o card ir sozinho para "Sem retorno".
+ *  Precisa bater com o valor agendado em supabase/migrations/0002_auto_no_response.sql. */
+export const AUTO_NO_RESPONSE_DAYS = 40;

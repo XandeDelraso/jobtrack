@@ -1,8 +1,8 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
-import { CalendarClock, Star, MapPin, AlarmClock } from "lucide-react";
+import { CalendarClock, Star, MapPin, AlarmClock, Hourglass } from "lucide-react";
 import type { ApplicationRow } from "@/types/database";
-import { PRIORITY_META, WORK_MODEL_LABELS } from "@/lib/statuses";
+import { AUTO_NO_RESPONSE_DAYS, PRIORITY_META, WORK_MODEL_LABELS } from "@/lib/statuses";
 import { formatDate, formatSalaryRange, isDateToday, isDateTodayOrPast } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/store/uiStore";
@@ -88,8 +88,16 @@ export function ApplicationCard({ application }: { application: ApplicationRow }
         )}
       </div>
 
-      {(followUpDue || interviewToday) && (
+      {(followUpDue || interviewToday || application.auto_moved_at) && (
         <div className="mt-2 flex flex-wrap gap-1.5">
+          {application.auto_moved_at && (
+            <span
+              className="inline-flex items-center gap-1 rounded-full border border-dashed border-slate-400/60 bg-slate-500/10 px-2 py-0.5 text-[11px] font-medium text-slate-600 dark:text-slate-300"
+              title={`Movida automaticamente em ${formatDate(application.auto_moved_at)} após ${AUTO_NO_RESPONSE_DAYS} dias sem movimentação`}
+            >
+              <Hourglass className="h-3 w-3" /> Movida automaticamente
+            </span>
+          )}
           {interviewToday && (
             <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2 py-0.5 text-[11px] font-medium text-amber-700 dark:text-amber-300">
               <CalendarClock className="h-3 w-3" /> Entrevista hoje
