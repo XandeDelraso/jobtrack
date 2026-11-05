@@ -9,6 +9,7 @@ import {
   MapPin,
   Building2,
   Briefcase,
+  Hourglass,
 } from "lucide-react";
 import {
   Sheet,
@@ -38,6 +39,7 @@ import {
   useUpdateApplicationStatus,
 } from "@/hooks/useApplications";
 import {
+  AUTO_NO_RESPONSE_DAYS,
   EMPLOYMENT_TYPE_LABELS,
   PRIORITY_META,
   STATUS_META,
@@ -132,6 +134,18 @@ export function ApplicationDetailDrawer() {
           </SheetHeader>
 
           <SheetBody>
+            {application.auto_moved_at && (
+              <div className="mb-4 flex items-start gap-2.5 rounded-lg border border-dashed border-slate-400/60 bg-slate-500/5 p-3 text-sm">
+                <Hourglass className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                <div>
+                  <p className="font-medium text-foreground">Movida automaticamente</p>
+                  <p className="text-xs text-muted-foreground">
+                    Esta candidatura foi para "Sem retorno" em {formatDate(application.auto_moved_at)} após{" "}
+                    {AUTO_NO_RESPONSE_DAYS} dias sem movimentação. Ao mover o card, este aviso some.
+                  </p>
+                </div>
+              </div>
+            )}
             <div className="mb-4 space-y-1.5">
               <p className="text-xs font-medium text-muted-foreground">Mover para</p>
               <Select

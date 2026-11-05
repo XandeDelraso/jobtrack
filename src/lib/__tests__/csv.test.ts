@@ -32,6 +32,8 @@ function buildApplication(overrides: Partial<ApplicationRow> = {}): ApplicationR
     follow_up_date: null,
     created_at: "2026-01-01T00:00:00.000Z",
     updated_at: "2026-01-01T00:00:00.000Z",
+    status_changed_at: "2026-01-01T00:00:00.000Z",
+    auto_moved_at: null,
     ...overrides,
   };
 }
@@ -59,6 +61,15 @@ describe("applicationsToCsv", () => {
   it("translates status to the Portuguese label", () => {
     const csv = applicationsToCsv([buildApplication({ status: "positive" })]);
     expect(csv).toContain("Retorno positivo");
+  });
+
+  it("flags applications moved automatically to no_response", () => {
+    const csv = applicationsToCsv([
+      buildApplication({ status: "no_response", auto_moved_at: "2026-11-01T06:00:00.000Z" }),
+    ]);
+    const [header, row] = stripBom(csv).split("\r\n");
+    expect(header.endsWith("Movida automaticamente")).toBe(true);
+    expect(row.endsWith(",Sim")).toBe(true);
   });
 
   it("produces an empty-data CSV (header only) for an empty list", () => {

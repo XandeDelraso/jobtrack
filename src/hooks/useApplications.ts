@@ -119,7 +119,9 @@ export function useUpdateApplicationStatus() {
       if (previous) {
         queryClient.setQueryData<ApplicationRow[]>(
           key,
-          previous.map((app) => (app.id === id ? { ...app, status } : app))
+          previous.map((app) =>
+            app.id === id ? { ...app, status, auto_moved_at: null } : app
+          )
         );
       }
       return { previous };

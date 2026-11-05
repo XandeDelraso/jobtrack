@@ -2,7 +2,7 @@ import { History } from "lucide-react";
 import { useApplicationHistory } from "@/hooks/useApplications";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
-import { formatDateTime } from "@/lib/utils";
+import { cn, formatDateTime } from "@/lib/utils";
 
 export function HistoryTimeline({ applicationId }: { applicationId: string }) {
   const { data: history, isLoading } = useApplicationHistory(applicationId);
@@ -37,8 +37,20 @@ export function HistoryTimeline({ applicationId }: { applicationId: string }) {
     <ol className="relative space-y-5 border-l border-border pl-5">
       {history.map((entry) => (
         <li key={entry.id} className="relative">
-          <span className="absolute -left-[25px] top-1 h-2.5 w-2.5 rounded-full border-2 border-background bg-primary" />
-          <p className="text-sm text-foreground">{entry.description}</p>
+          <span
+            className={cn(
+              "absolute -left-[25px] top-1 h-2.5 w-2.5 rounded-full border-2 border-background",
+              entry.event_type === "status_auto_changed" ? "bg-slate-400" : "bg-primary"
+            )}
+          />
+          <p className="text-sm text-foreground">
+            {entry.description}
+            {entry.event_type === "status_auto_changed" && (
+              <span className="ml-1.5 rounded-full bg-slate-500/10 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
+                automático
+              </span>
+            )}
+          </p>
           <p className="text-xs text-muted-foreground">{formatDateTime(entry.created_at)}</p>
         </li>
       ))}

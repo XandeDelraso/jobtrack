@@ -30,6 +30,7 @@ CSV e autenticação com isolamento total de dados por usuário.
 - Dashboard com indicadores (total, por status, favoritas, entrevistas próximas, follow-ups vencidos)
 - Estatísticas (candidaturas por período, taxas de entrevista/resposta/retorno positivo, distribuição por modelo de trabalho e contratação, salário médio esperado)
 - Histórico automático por candidatura (criação, mudança de status, agendamento de entrevista, follow-up, favorito)
+- **"Sem retorno" automático**: candidaturas em "Currículo enviado" ou "Entrevista marcada" que ficam 40 dias sem mudança de status vão sozinhas para "Sem retorno" (job diário via `pg_cron`), com um selo "Movida automaticamente" até serem movidas manualmente. Entrevistas futuras e follow-ups pendentes impedem a movimentação.
 - Exportação de candidaturas em CSV
 - Perfil e configurações (nome, senha, tema, sair da conta)
 - Dark mode, responsividade completa (desktop → mobile) e estados de carregamento/erro/vazio em toda a aplicação
@@ -68,6 +69,10 @@ Supabase, então esta etapa precisa ser feita manualmente:
    `application_history`), habilita Row Level Security com policies que
    restringem cada usuário aos próprios dados, os triggers de histórico
    automático e a função de busca de candidaturas similares.
+   Em seguida, execute também
+   [`supabase/migrations/0002_auto_no_response.sql`](supabase/migrations/0002_auto_no_response.sql),
+   que adiciona a movimentação automática para "Sem retorno" e agenda o job
+   diário no `pg_cron`.
    - Alternativamente, com a [Supabase CLI](https://supabase.com/docs/guides/cli)
      instalada e logada: `supabase link --project-ref SEU_PROJETO` e depois
      `supabase db push`.

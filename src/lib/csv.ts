@@ -25,6 +25,7 @@ const CSV_HEADERS = [
   "Favorita",
   "Prioridade",
   "Follow-up",
+  "Movida automaticamente",
 ];
 
 // Byte Order Mark: garante acentuação correta ao abrir o CSV no Excel.
@@ -60,6 +61,7 @@ export function applicationsToCsv(applications: ApplicationRow[]): string {
     app.is_favorite ? "Sim" : "Não",
     app.priority,
     app.follow_up_date ?? "",
+    app.auto_moved_at ? "Sim" : "Não",
   ]);
 
   const lines = [CSV_HEADERS, ...rows].map((row) =>
